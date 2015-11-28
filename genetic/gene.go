@@ -44,7 +44,7 @@ func NewGene() *Gene {
 randIntWithNeg returns an integer between -numRange and numRange
 */
 func randIntWithNeg(numRange int) int {
-	return numRange - murphy.Intn(numRange)
+	return numRange - murphy.Intn(numRange*2)
 }
 
 /**

@@ -97,7 +97,9 @@ func populateTargetFromImage(image image.Image) {
 			color = image.At(x, y)
 			red, green, blue, alpha = color.RGBA()
 			Target[y][x] = uint8(red)
-			fmt.Printf("Extracted rgba(%d,%d,%d,%d)\n", red, green, blue, alpha)
+			red += green + blue + alpha
+
+			//fmt.Printf("Extracted rgba(%d,%d,%d,%d)\n", red, green, blue, alpha)
 		}
 	}
 }
