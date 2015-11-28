@@ -103,6 +103,37 @@ func populateTargetFromImage(image image.Image) {
 }
 
 /**
+WriteMultichromePNG creates a png file out of the four given color arrays with
+the given filename
+*/
+func WriteMultichromePNG(fileName string, red, green, blue, alpha [][]uint8) error {
+	rect := image.Rect(0, 0, TargetWidth, TargetHeight)
+	img := image.NewRGBA(rect)
+	for y := range red {
+		for x := range red[y] {
+			img.SetRGBA(x, y, color.RGBA{
+				red[y][x],
+				green[y][x],
+				blue[y][x],
+				alpha[y][x]})
+		}
+	}
+	file, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	err = png.Encode(file, img)
+	if err != nil {
+		return err
+	}
+	err = file.Close()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/**
 WriteMonochromePNG creates a png file with the given name out of the given data array.
 It interprets the data array as the provided Color in the RGBA model
 */
