@@ -29,9 +29,9 @@ random function
 */
 func NewGene() *Gene {
 	g := Gene{
-		randIntWithNeg(255),
-		randIntWithNeg(255),
-		randIntWithNeg(255),
+		randCoefficient(),
+		randCoefficient(),
+		randCoefficient(),
 		nil,
 		"",
 	}
@@ -52,7 +52,7 @@ randCoefficient generates a random number between -255 and 255
 for use as a coefficient in a Gene
 */
 func randCoefficient() int {
-	return randIntWithNeg(255)
+	return randIntWithNeg(16)
 }
 
 /**
@@ -88,9 +88,15 @@ func (gene *Gene) generateNewGeneFunction() {
 Mutate the gene by changing the constants involved
 */
 func (gene *Gene) Mutate() {
-	gene.A = randCoefficient()
-	gene.B = randCoefficient()
-	gene.C = randCoefficient()
+	victim := murphy.Intn(3)
+	switch victim {
+	case 0:
+		gene.A = randCoefficient()
+	case 1:
+		gene.B = randCoefficient()
+	case 2:
+		gene.C = randCoefficient()
+	}
 }
 
 /**

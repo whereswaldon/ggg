@@ -23,27 +23,31 @@ func main() {
 
 	//Test out the Member implementation
 	r := genetic.NewMember()
-	fmt.Printf("Red: %s\n", r)
-	/*	g := genetic.NewMember()
-		fmt.Printf("Green: %s\n", g)
-		b := genetic.NewMember()
-		fmt.Printf("Blue: %s\n", b)
-		a := genetic.NewMember()
-		fmt.Printf("Alpha: %s\n", a)
-		err := genetic.WriteMultichromePNG("random.png",
-			r.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
-			g.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
-			b.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
-			a.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth))
-	*/
-	err := genetic.WriteMonochromePNG("random.png",
-		r.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
-		genetic.RED)
-	if err != nil {
-		fmt.Println(err)
+	for i := 0; i < 100; i++ {
+		fmt.Printf("Red: %s\n", r)
+		/*	g := genetic.NewMember()
+			fmt.Printf("Green: %s\n", g)
+			b := genetic.NewMember()
+			fmt.Printf("Blue: %s\n", b)
+			a := genetic.NewMember()
+			fmt.Printf("Alpha: %s\n", a)
+			err := genetic.WriteMultichromePNG("random.png",
+				r.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
+				g.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
+				b.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
+				a.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth))
+		*/
+		err := genetic.WriteMonochromePNG(fmt.Sprintf("random-%d.png", i),
+			r.GetData(),
+			genetic.RED)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("Fitness: %d\n", r.GetFitness())
+		r.Mutate()
+		/*
+			p := genetic.NewPopulation(100)
+			fmt.Println(p)
+		*/
 	}
-	/*
-		p := genetic.NewPopulation(100)
-		fmt.Println(p)
-	*/
 }
