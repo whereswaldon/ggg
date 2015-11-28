@@ -23,8 +23,12 @@ func main() {
 
 	//Test out the Member implementation
 	r := genetic.NewMember()
+	g := genetic.NewMember()
+	b := genetic.NewMember()
 	for i := 0; i < 100; i++ {
 		fmt.Printf("Red: %s\n", r)
+		fmt.Printf("Blue: %s\n", b)
+		fmt.Printf("Green: %s\n", g)
 		/*	g := genetic.NewMember()
 			fmt.Printf("Green: %s\n", g)
 			b := genetic.NewMember()
@@ -37,14 +41,15 @@ func main() {
 				b.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth),
 				a.CreateDataArray(genetic.TargetHeight, genetic.TargetWidth))
 		*/
-		err := genetic.WriteMonochromePNG(fmt.Sprintf("random-%d.png", i),
-			r.GetData(),
-			genetic.RED)
+		err := genetic.WriteMultichromePNG(fmt.Sprintf("random-%d.png", i),
+			r.GetData(), g.GetData(), b.GetData(), nil)
 		if err != nil {
 			fmt.Println(err)
 		}
 		fmt.Printf("Fitness: %d\n", r.GetFitness())
 		r.Mutate()
+		g.Mutate()
+		b.Mutate()
 		/*
 			p := genetic.NewPopulation(100)
 			fmt.Println(p)

@@ -111,6 +111,35 @@ the given filename
 func WriteMultichromePNG(fileName string, red, green, blue, alpha [][]uint8) error {
 	rect := image.Rect(0, 0, TargetWidth, TargetHeight)
 	img := image.NewRGBA(rect)
+
+	//handle nil inputs
+	if red == nil {
+		red = make([][]uint8, TargetHeight)
+		for i := range red {
+			red[i] = make([]uint8, TargetWidth)
+		}
+	}
+	if green == nil {
+		green = make([][]uint8, TargetHeight)
+		for i := range green {
+			green[i] = make([]uint8, TargetWidth)
+		}
+	}
+	if blue == nil {
+		blue = make([][]uint8, TargetHeight)
+		for i := range blue {
+			blue[i] = make([]uint8, TargetWidth)
+		}
+	}
+	if alpha == nil {
+		alpha = make([][]uint8, TargetHeight)
+		for i := range alpha {
+			alpha[i] = make([]uint8, TargetWidth)
+			for j := range alpha[i] {
+				alpha[i][j] = 255
+			}
+		}
+	}
 	for y := range red {
 		for x := range red[y] {
 			img.SetRGBA(x, y, color.RGBA{

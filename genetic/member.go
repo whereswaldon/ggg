@@ -151,5 +151,8 @@ func (mem *Member) EvalGenesAt(xCoord, yCoord int) uint8 {
 	for _, g := range mem.Genes {
 		val += uint8(g.EvalWith(xCoord, yCoord))
 	}
+	if recovery := recover(); recovery != nil {
+		return 255
+	}
 	return val
 }
