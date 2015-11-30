@@ -22,7 +22,10 @@ func main() {
 	}
 
 	//test out new population
-	p := genetic.NewPopulation(100)
-	fmt.Println(p)
-
+	p := genetic.NewPopulation(100, 0.06)
+	fmt.Println(p.GetBestForPrinting(3))
+	for i := 0; i < 10; i++ {
+		p.Evolve()
+		fmt.Println(p.GetBestForPrinting(3))
+	}
 }
