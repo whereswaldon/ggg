@@ -85,6 +85,19 @@ func (gene *Gene) generateNewGeneFunction() {
 }
 
 /**
+Copy returns an exact duplicate of this gene.
+*/
+func (gene *Gene) Copy() *Gene {
+	return &Gene{
+		gene.A,
+		gene.B,
+		gene.C,
+		gene.f,
+		gene.format,
+	}
+}
+
+/**
 Mutate the gene by changing the constants involved
 */
 func (gene *Gene) Mutate() {

@@ -201,16 +201,27 @@ func (mem *Member) EvalGenesAt(xCoord, yCoord int) (val uint8) {
 }
 
 /**
-Cross takes the genes of the two given Members and creates "child" Members from them
-with attributes of both of their "parents"
+Cross takes the genes of the two given Members and creates a "child" Member from them
+with attributes of both of its "parents"
 */
 func Cross(m1, m2 *Member) *Member {
-	depth1 := murphy.Intn(len(m1.Genes))
+	depth1 := murphy.Intn(len(m1.Genes)) + 1
 	depth2 := murphy.Intn(len(m2.Genes))
-	genes := make([]*Gene, len(m1.Genes))
-	copy(genes, m1.Genes[:depth1])
+	zygote1 := m1.Genes[:depth1]
+	zygote2 := m2.Genes[depth2:]
 
-	genes = append(genes, m2.Genes[depth2:]...)
+	genes := make([]*Gene, len(zygote1)+len(zygote2))
+
+	geneIndex := 0
+	for i, v := range zygote1 {
+		genes[i] = v.Copy()
+		geneIndex++
+	}
+
+	for _, v := range zygote2 {
+		genes[geneIndex] = v.Copy()
+		geneIndex++
+	}
 
 	return &Member{genes, nil, 0, false}
 }
