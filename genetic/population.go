@@ -26,7 +26,7 @@ func NewPopulation(size int, mutate float64) *Population {
 	for i := range m {
 		m[i] = NewMember()
 	}
-	sort.Sort(ByFitness(m))
+	sort.Sort(ByFitnessDesc(m))
 	return &Population{m, mutate}
 }
 
@@ -76,7 +76,7 @@ func (pop *Population) Evolve() {
 	fmt.Printf("index1: %d\nindex2: %d\n", index1, index2)
 	newMem := Cross(pop.Members[index1], pop.Members[index2])
 	pop.Members[popSize-1] = newMem
-	sort.Sort(ByFitness(pop.Members))
+	sort.Sort(ByFitnessDesc(pop.Members))
 }
 
 /**

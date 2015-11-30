@@ -21,15 +21,15 @@ type Member struct {
 }
 
 /**
-ByFitness is a slice of Members sorted by their fitness score relative to the
-target.
+ByFitnessAsc is a slice of Members sorted by their fitness score relative to the target
+in order of ascending fitness
 */
-type ByFitness []*Member
+type ByFitnessAsc []*Member
 
 /**
 Len returns the length of the slice of sorted Members.
 */
-func (f ByFitness) Len() int {
+func (f ByFitnessAsc) Len() int {
 	return len(f)
 }
 
@@ -37,7 +37,7 @@ func (f ByFitness) Len() int {
 Swap implements swapping two elements of the ByFitness sorted
 slice of Members.
 */
-func (f ByFitness) Swap(i, j int) {
+func (f ByFitnessAsc) Swap(i, j int) {
 	f[i], f[j] = f[j], f[i]
 }
 
@@ -45,8 +45,37 @@ func (f ByFitness) Swap(i, j int) {
 Less returns true if the Member at position i is less fit than the member at
 position j
 */
-func (f ByFitness) Less(i, j int) bool {
+func (f ByFitnessAsc) Less(i, j int) bool {
 	return f[i].GetFitness() < f[j].GetFitness()
+}
+
+/**
+ByFitness is a slice of Members sorted by their fitness score relative to the
+target in order of descending fitness.
+*/
+type ByFitnessDesc []*Member
+
+/**
+Len returns the length of the slice of sorted Members.
+*/
+func (f ByFitnessDesc) Len() int {
+	return len(f)
+}
+
+/**
+Swap implements swapping two elements of the ByFitness sorted
+slice of Members.
+*/
+func (f ByFitnessDesc) Swap(i, j int) {
+	f[i], f[j] = f[j], f[i]
+}
+
+/**
+Less returns true if the Member at position i is less fit than the member at
+position j
+*/
+func (f ByFitnessDesc) Less(i, j int) bool {
+	return f[i].GetFitness() > f[j].GetFitness()
 }
 
 /**
