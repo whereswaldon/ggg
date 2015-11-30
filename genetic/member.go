@@ -71,7 +71,7 @@ func (mem *Member) String() string {
 	for i, v := range mem.Genes {
 		stringGenes[i] = v.String()
 	}
-	return fmt.Sprintf("Member:\n\t%s", strings.Join(stringGenes, "\n\t"))
+	return fmt.Sprintf("Member:\t(fitness: %d)\n\t%s", mem.GetFitness(), strings.Join(stringGenes, "\n\t"))
 }
 
 /**
@@ -138,7 +138,7 @@ GetFitness returns an integer score representing how closely this member's
 data aligns with the target data. Low scores are better.
 */
 func (mem *Member) GetFitness() int {
-	if mem.mutated {
+	if mem.mutated || mem.fitness == 0 {
 		mem.fitness = mem.computeFitness()
 	}
 	return mem.fitness
@@ -192,11 +192,25 @@ func (mem *Member) EvalGenesAt(xCoord, yCoord int) (val uint8) {
 	defer func() {
 		if recovery := recover(); recovery != nil {
 			val = 255
-			fmt.Println("\nCaught division by zero!!!\n")
 		}
 	}()
 	for _, g := range mem.Genes {
 		val += uint8(g.EvalWith(xCoord, yCoord))
 	}
 	return val
+}
+
+/**
+Cross takes the genes of the two given Members and creates "child" Members from them
+with attributes of both of their "parents"
+*/
+func Cross(m1, m2 *Member) *Member {
+	depth1 := murphy.Intn(len(m1.Genes))
+	depth2 := murphy.Intn(len(m2.Genes))
+	genes := make([]*Gene, len(m1.Genes))
+	copy(genes, m1.Genes[:depth1])
+
+	genes = append(genes, m2.Genes[depth2:]...)
+
+	return &Member{genes, nil, 0, false}
 }

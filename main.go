@@ -23,5 +23,14 @@ func main() {
 
 	//test out new population
 	p := genetic.NewPopulation(100)
-	fmt.Println(p.Size())
+	fmt.Println(p)
+
+	m1 := genetic.NewMember()
+	m2 := genetic.NewMember()
+	fmt.Println(m1)
+	fmt.Println(m2)
+	m3 := genetic.Cross(m1, m2)
+	fmt.Println(m1)
+	fmt.Println(m2)
+	fmt.Println(m3)
 }
