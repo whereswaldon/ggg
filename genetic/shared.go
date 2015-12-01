@@ -18,10 +18,7 @@ getRandomWeightedFloat returns a float in [0.0, 1.0) that is more likely to be l
 func getRandomWeightedFloat() float64 {
 	f1 := murphy.Float64()
 	f2 := murphy.Float64()
-	if f1 < f2 {
-		return f1
-	}
-	return f2
+	return f1 * f2
 }
 
 /**

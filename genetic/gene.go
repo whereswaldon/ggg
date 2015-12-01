@@ -19,8 +19,8 @@ f is a function that evalutes the three constant coefficients
 format is a format-string representation of the function body
 */
 type Gene struct {
-	A, B, C int
-	F       func(int, int, int, int, int) int
+	A, B, C float64
+	F       func(float64, float64, float64, int, int) int
 	Format  string
 }
 
@@ -49,11 +49,19 @@ func randIntWithNeg(numRange int) int {
 }
 
 /**
+randFloatWithNeg creates a random floating point number between the integer
+and its negative equivalent
+*/
+func randFloatWithNeg(numRange int) float64 {
+	return murphy.Float64() * float64(numRange)
+}
+
+/**
 randCoefficient generates a random number between -255 and 255
 for use as a coefficient in a Gene
 */
-func randCoefficient() int {
-	return randIntWithNeg(max(TargetWidth, TargetHeight))
+func randCoefficient() float64 {
+	return randFloatWithNeg(max(TargetWidth, TargetHeight))
 }
 
 /**
@@ -61,7 +69,7 @@ generateNewGeneFunction creates a function appropriate for a Gene
 struct randomly.
 */
 func (gene *Gene) generateNewGeneFunction() {
-	switch murphy.Intn(2) {
+	switch murphy.Intn(3) {
 	/*
 		case 0:
 			gene.F = func(a, b, c, x, y int) int {
@@ -85,15 +93,30 @@ func (gene *Gene) generateNewGeneFunction() {
 			gene.Format = "%d * x + %d * y + %d"
 	*/
 	case 0:
-		gene.F = func(a, b, c, x, y int) int {
-			return -1 * (int(math.Sqrt(float64((a-x)*(a-x)+(b-y)*(b-y)))) + c*c)
+		gene.F = func(a, b, c float64, x, y int) int {
+			xf, yf := float64(x), float64(y)
+			return -1 * int(math.Sqrt(((a-xf)*(a-xf)+(b-yf)*(b-yf)))+c*c)
 		}
-		gene.Format = "-1*(((%d - x)^2 + (%d - y)^2)^.5 + %d^2)"
+		gene.Format = "-1*(((%f - x)^2 + (%f - y)^2)^.5 + %f^2)"
+	case 1:
+		gene.F = func(a, b, c float64, x, y int) int {
+			xf, yf := float64(x), float64(y)
+			return int(c - c*math.Abs(a-xf)/a - c*math.Abs(b-yf)/b)
+		}
+		gene.Format = "c-c*|a-x|/a - c*|b-yf|/b a=%f b=%f c=%f"
+		/*
+			case 2:
+				gene.F = func(a, b, c float64, x, y int) int {
+					return int(c + b + a)
+				}
+				gene.Format = "%f + %f + %f"
+		*/
 	default:
-		gene.F = func(a, b, c, x, y int) int {
-			return int(math.Sqrt(float64((a-x)*(a-x)+(b-y)*(b-y)))) + c*c
+		gene.F = func(a, b, c float64, x, y int) int {
+			xf, yf := float64(x), float64(y)
+			return int(math.Sqrt(((a-xf)*(a-xf) + (b-yf)*(b-yf))) + c*c)
 		}
-		gene.Format = "((%d - x)^2 + (%d - y)^2)^.5 + %d^2"
+		gene.Format = "((%f - x)^2 + (%f - y)^2)^.5 + %f^2"
 	}
 }
 
