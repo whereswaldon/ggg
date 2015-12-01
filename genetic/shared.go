@@ -23,3 +23,13 @@ func getRandomWeightedFloat() float64 {
 	}
 	return f2
 }
+
+/**
+max returns the maximum of two values
+*/
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}

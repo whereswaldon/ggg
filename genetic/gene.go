@@ -2,6 +2,7 @@ package genetic
 
 import (
 	"fmt"
+	"math"
 )
 
 /**
@@ -19,8 +20,8 @@ format is a format-string representation of the function body
 */
 type Gene struct {
 	A, B, C int
-	f       func(int, int, int, int, int) int
-	format  string
+	F       func(int, int, int, int, int) int
+	Format  string
 }
 
 /**
@@ -52,7 +53,7 @@ randCoefficient generates a random number between -255 and 255
 for use as a coefficient in a Gene
 */
 func randCoefficient() int {
-	return randIntWithNeg(16)
+	return randIntWithNeg(max(TargetWidth, TargetHeight))
 }
 
 /**
@@ -60,27 +61,39 @@ generateNewGeneFunction creates a function appropriate for a Gene
 struct randomly.
 */
 func (gene *Gene) generateNewGeneFunction() {
-	switch murphy.Intn(10) {
+	switch murphy.Intn(2) {
+	/*
+		case 0:
+			gene.F = func(a, b, c, x, y int) int {
+				return (a * x / (b*y + 1)) + c
+			}
+			gene.Format = "(%d * x / (%d*y + 1)) + %d"
+		case 1:
+			gene.F = func(a, b, c, x, y int) int {
+				return a + b + c + x + y
+			}
+			gene.Format = "%d + %d + %d + x + y"
+		case 2:
+			gene.F = func(a, b, c, x, y int) int {
+				return a * x * b * y * c
+			}
+			gene.Format = "%d * x * %d * y * %d"
+		case 3:
+			gene.F = func(a, b, c, x, y int) int {
+				return a*x + b*y + c
+			}
+			gene.Format = "%d * x + %d * y + %d"
+	*/
 	case 0:
-		gene.f = func(a, b, c, x, y int) int {
-			return (a * x / (b*y + 1)) + c
+		gene.F = func(a, b, c, x, y int) int {
+			return -1 * (int(math.Sqrt(float64((a-x)*(a-x)+(b-y)*(b-y)))) + c*c)
 		}
-		gene.format = "(%d * x / (%d*y + 1)) + %d"
-	case 1:
-		gene.f = func(a, b, c, x, y int) int {
-			return a + b + c + x + y
-		}
-		gene.format = "%d + %d + %d + x + y"
-	case 2:
-		gene.f = func(a, b, c, x, y int) int {
-			return a * x * b * y * c
-		}
-		gene.format = "%d * x * %d * y * %d"
+		gene.Format = "-1*(((%d - x)^2 + (%d - y)^2)^.5 + %d^2)"
 	default:
-		gene.f = func(a, b, c, x, y int) int {
-			return a*x + b*y + c
+		gene.F = func(a, b, c, x, y int) int {
+			return int(math.Sqrt(float64((a-x)*(a-x)+(b-y)*(b-y)))) + c*c
 		}
-		gene.format = "%d * x + %d * y + %d"
+		gene.Format = "((%d - x)^2 + (%d - y)^2)^.5 + %d^2"
 	}
 }
 
@@ -92,8 +105,8 @@ func (gene *Gene) Copy() *Gene {
 		gene.A,
 		gene.B,
 		gene.C,
-		gene.f,
-		gene.format,
+		gene.F,
+		gene.Format,
 	}
 }
 
@@ -116,13 +129,13 @@ func (gene *Gene) Mutate() {
 Evaluates the gene's function for the given x and y
 */
 func (gene *Gene) EvalWith(x, y int) int {
-	return gene.f(gene.A, gene.B, gene.C, x, y)
+	return gene.F(gene.A, gene.B, gene.C, x, y)
 }
 
 /**
 Returns a string representation of the Gene
 */
 func (gene *Gene) String() string {
-	functionString := fmt.Sprintf(gene.format, gene.A, gene.B, gene.C)
+	functionString := fmt.Sprintf(gene.Format, gene.A, gene.B, gene.C)
 	return fmt.Sprintf("f(x,y) = %s", functionString)
 }

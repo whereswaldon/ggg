@@ -73,7 +73,7 @@ func (pop *Population) Evolve() {
 	popSize := pop.Size()
 	index1 := int(math.Abs(getRandomWeightedFloat()) * float64(popSize))
 	index2 := int(math.Abs(getRandomWeightedFloat()) * float64(popSize))
-	fmt.Printf("index1: %d\nindex2: %d\n", index1, index2)
+	//fmt.Printf("index1: %d\nindex2: %d\n", index1, index2)
 	newMem := Cross(pop.Members[index1], pop.Members[index2])
 	pop.Members[popSize-1] = newMem
 	sort.Sort(ByFitnessDesc(pop.Members))

@@ -126,25 +126,25 @@ func (mem *Member) Mutate() {
 	switch dieRoll {
 	case 0:
 		//delete a gene
-		if numGenes > 0 {
+		if numGenes > 1 {
 			mem.deleteFirstGene()
-			fmt.Println("Lost a gene.")
+			//fmt.Println("Lost a gene.")
 		} else {
 			//add a gene
 			mem.addGeneAtEnd()
-			fmt.Println("Gained a gene.")
+			//fmt.Println("Gained a gene.")
 		}
 	case 1:
 		fallthrough
 	case 2:
 		//add a gene
 		mem.addGeneAtEnd()
-		fmt.Println("Gained a gene.")
+		//fmt.Println("Gained a gene.")
 	default:
 		//mutate an existing gene
 		victim := murphy.Intn(numGenes)
 		mem.Genes[victim].Mutate()
-		fmt.Printf("Changed gene %d\n", victim)
+		//fmt.Printf("Changed gene %d\n", victim)
 	}
 }
 
@@ -185,9 +185,9 @@ func (mem *Member) computeFitness() int {
 			dataPoint = data[y][x]
 			targetPoint = Target[y][x]
 			if dataPoint > targetPoint {
-				offBy += int(dataPoint) - int(targetPoint)
+				offBy += 255 - (int(dataPoint) - int(targetPoint))
 			} else {
-				offBy += int(targetPoint) - int(dataPoint)
+				offBy += 255 - (int(targetPoint) - int(dataPoint))
 			}
 		}
 	}
