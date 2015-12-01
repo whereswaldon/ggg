@@ -35,10 +35,10 @@ func main() {
 		genetic.WriteMonochromePNG("out.png", m.GetData(), genetic.RED)
 	*/
 	//test out new population
-	p := genetic.NewPopulation(200, 0.10)
-	fmt.Println(p.GetBestForPrinting(1))
+	p := genetic.NewPopulation(200, 0.15)
+	//fmt.Println(p.GetBestForPrinting(1))
 	bestScore := 0
-	runs := 1000
+	runs := 100
 	for i := 0; i < runs; i++ {
 		p.Evolve()
 		tempScore := p.Members[0].GetFitness()

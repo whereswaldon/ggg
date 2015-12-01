@@ -2,6 +2,7 @@ package genetic
 
 import (
 	"fmt"
+	//	"math"
 	"strings"
 )
 
@@ -178,21 +179,22 @@ computeFitness computes the fitness score of a given member as an integer.
 */
 func (mem *Member) computeFitness() int {
 	data := mem.GetData()
-	var dataPoint, targetPoint uint8
 	offBy := 0
 	for y := range Target {
 		for x := range Target[y] {
-			dataPoint = data[y][x]
-			targetPoint = Target[y][x]
-			if dataPoint > targetPoint {
-				offBy += 255 - (int(dataPoint) - int(targetPoint))
-			} else {
-				offBy += 255 - (int(targetPoint) - int(dataPoint))
-			}
+			offBy += similarity(data[y][x], Target[y][x])
 		}
 	}
 
 	return offBy
+}
+
+/**
+similarity returns an integer that is closer to 255 the closer together the two
+operands are.
+*/
+func similarity(data, target uint8) int {
+	return int((data - target) * (data - target))
 }
 
 /**

@@ -22,12 +22,12 @@ NewPopulation creates a new random population of the
 specified size.
 */
 func NewPopulation(size int, mutate float64) *Population {
-	m := make([]*Member, size)
+	m := make([]*Member, size*10)
 	for i := range m {
 		m[i] = NewMember()
 	}
 	sort.Sort(ByFitnessDesc(m))
-	return &Population{m, mutate}
+	return &Population{m[:size], mutate}
 }
 
 /**
