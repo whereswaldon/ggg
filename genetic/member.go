@@ -182,7 +182,7 @@ func (mem *Member) computeFitness() int {
 	offBy := 0
 	for y := range Target {
 		for x := range Target[y] {
-			offBy += similarity(data[y][x], Target[y][x])
+			offBy += similaritySquared(data[y][x], Target[y][x])
 		}
 	}
 
@@ -195,6 +195,14 @@ operands are.
 */
 func similarity(data, target uint8) int {
 	return int((data - target) * (data - target))
+}
+
+/**
+similaritySquared returns an integer that weights higher similarities significantly more than lower ones.
+*/
+func similaritySquared(data, target uint8) int {
+	sim := similarity(data, target)
+	return sim * sim
 }
 
 /**

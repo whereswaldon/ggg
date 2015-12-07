@@ -36,10 +36,10 @@ func main() {
 	*/
 
 	//test out new population
-	p := genetic.NewPopulation(2000, 0.03)
+	p := genetic.NewPopulation(200, 0.03)
 	//fmt.Println(p.GetBestForPrinting(1))
 	bestScore := 0
-	runs := 1000000
+	runs := 1000
 	for i := 0; i < runs; i++ {
 		p.Evolve()
 		tempScore := p.Members[0].GetFitness()
@@ -48,7 +48,7 @@ func main() {
 			bestScore = tempScore
 			genetic.WriteMonochromePNG(fmt.Sprintf("solution-%d.png", i), p.Members[0].GetData(), genetic.RED)
 		} else {
-			fmt.Printf("%d/%d:\t%d <= %d\n", i, runs, tempScore, bestScore)
+			fmt.Printf("%d,\t%d,\t%d\n", i, runs, tempScore, bestScore)
 		}
 	}
 }
